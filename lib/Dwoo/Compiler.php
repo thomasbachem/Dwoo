@@ -1350,7 +1350,7 @@ class Dwoo_Compiler implements Dwoo_ICompiler
 		} elseif ($first==='%' && preg_match('#^%[a-z_]#i', $substr)) {
 			// const
 			$out = $this->parseConst($in, $from, $to, $parsingParams, $curBlock, $pointer);
-		} elseif (($first==='"' || $first==="'") && !(is_array($parsingParams) && preg_match('#^([\'"])[a-z0-9_]+\1\s*=>?(?:\s+|[^=])#i', $substr))) {
+		} elseif (($first==='"' || $first==="'") && !(is_array($parsingParams) && preg_match('#^(?:[a-z0-9_]+|\'[^\']+\'|"[^"]+")\s*=>?(?:\s+|[^=])#i', $substr))) {
 			// string
 			$out = $this->parseString($in, $from, $to, $parsingParams, $curBlock, $pointer);
 		} elseif (preg_match('/^\\\\?[a-z_](?:\\\\?[a-z0-9_]+)*(?:::[a-z_][a-z0-9_]*)?('.(is_array($parsingParams)||$curBlock!='root'?'':'\s+[^(]|').'\s*\(|\s*'.$this->rdr.'|\s*;)/i', $substr)) {
@@ -1390,7 +1390,7 @@ class Dwoo_Compiler implements Dwoo_ICompiler
 			if ($this->debug) echo 'TAG PARSING ENDED<br />';
 			$pointer += strlen($this->rd);
 			return false;
-		} elseif (is_array($parsingParams) && preg_match('#^(([\'"]?)[a-z0-9_]+\2\s*='.($curBlock === 'array' ? '>?':'').')(?:\s+|[^=]).*#i', $substr, $match)) {
+		} elseif (is_array($parsingParams) && preg_match('#^((?:[a-z0-9_]+|\'[^\']+\'|"[^"]+")\s*='.($curBlock === 'array' ? '>?':'').')(?:\s+|[^=]).*#i', $substr, $match)) {
 			// named parameter
 			if ($this->debug) echo 'NAMED PARAM FOUND<br />';
 			$len = strlen($match[1]);
